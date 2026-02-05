@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Recording" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" app:cardCornerRadius="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Video Quality" />
+                        <Spinner android:id="@+id/spinnerVideoQuality"
+                            android:layout_width="140dp" android:layout_height="48dp" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Segment Duration" />
+                        <Spinner android:id="@+id/spinnerSegmentDuration"
+                            android:layout_width="140dp" android:layout_height="48dp" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:layout_marginBottom="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                            <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:text="Max Storage Usage" />
+                            <TextView android:id="@+id/tvMaxStorageValue"
+                                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="90%" android:textStyle="bold" />
+                        </LinearLayout>
+                        <com.google.android.material.slider.Slider android:id="@+id/sliderMaxStorage"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:valueFrom="50" android:valueTo="95" android:stepSize="5" android:value="90" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Record Audio" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchAudio" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:checked="true" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Keep Screen On" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchKeepScreenOn" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:checked="true" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Show Preview" />
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchShowPreview" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:checked="true" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Auto-Start Recording" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Start recording when app launches" android:textSize="12sp"
+                                android:alpha="0.7" />
+                        </LinearLayout>
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchAutoStart" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:checked="false" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cloud Upload Section -->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Cloud Upload" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" app:cardCornerRadius="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+
+                    <!-- Upload Destination Dropdown -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:gravity="center_vertical" android:layout_marginBottom="16dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Upload Destination" />
+                        <Spinner android:id="@+id/spinnerUploadDestination"
+                            android:layout_width="160dp" android:layout_height="48dp" />
+                    </LinearLayout>
+
+                    <!-- Dropbox Configuration -->
+                    <LinearLayout android:id="@+id/layoutDropboxConfig"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:visibility="gone"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:gravity="center_vertical" android:layout_marginBottom="12dp"
+                            android:padding="12dp" android:background="@drawable/rounded_background">
+                            <ImageView android:id="@+id/ivDropboxStatus"
+                                android:layout_width="24dp" android:layout_height="24dp"
+                                android:src="@drawable/ic_cloud_off"
+                                android:layout_marginEnd="12dp" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:id="@+id/tvDropboxStatus"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Not Connected" android:textStyle="bold" />
+                                <TextView android:id="@+id/tvDropboxEmail"
+                                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:visibility="gone" android:textSize="12sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDropboxConnect"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="Connect to Dropbox"
+                            app:icon="@drawable/ic_cloud" />
+
+                        <TextView android:id="@+id/tvDropboxFolderPath"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:text="Uploads to: App folder root"
+                            android:textSize="13sp" android:alpha="0.7"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnDropboxDisconnect"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:text="Disconnect"
+                            android:visibility="gone"
+                            style="@style/Widget.Material3.Button.OutlinedButton" />
+                    </LinearLayout>
+
+                    <!-- Cloud Upload Options (visible when any cloud destination is selected) -->
+                    <LinearLayout android:id="@+id/layoutCloudOptions"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical" android:visibility="gone">
+
+                        <!-- Upload on WiFi Only -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:gravity="center_vertical" android:layout_marginBottom="8dp">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Upload on WiFi Only" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Pause uploads on mobile data" android:textSize="12sp"
+                                    android:alpha="0.7" />
+                            </LinearLayout>
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switchWifiOnly" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:checked="false" />
+                        </LinearLayout>
+
+                        <!-- Auto Delete After Upload -->
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                                android:layout_weight="1" android:orientation="vertical">
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Delete After Upload" />
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                    android:text="Remove local file after successful upload" android:textSize="12sp"
+                                    android:alpha="0.7" />
+                            </LinearLayout>
+                            <com.google.android.material.switchmaterial.SwitchMaterial
+                                android:id="@+id/switchAutoDelete" android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:checked="false" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Close App Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" app:cardCornerRadius="12dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Stops any active recording, saves the current segment, and closes the app."
+                        android:textSize="13sp" android:alpha="0.7" android:layout_marginBottom="12dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCloseApp"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:text="Stop Recording &amp; Close App"
+                        app:icon="@drawable/ic_stop"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        app:iconTint="@android:color/holo_red_dark"
+                        android:textColor="@android:color/holo_red_dark" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Information Section -->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Information" android:textStyle="bold" android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp" app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" android:padding="16dp">
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="12dp">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                            android:src="@drawable/ic_info" android:layout_marginEnd="12dp"
+                            android:layout_gravity="top" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="About Cloud Storage" android:textStyle="bold"
+                                android:layout_marginBottom="4dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Currently only Dropbox is supported for cloud uploads. Dropbox was chosen for its reliability and direct upload capability, eliminating the need for additional cloud infrastructure. Your recordings are uploaded directly to your personal Dropbox account."
+                                android:textSize="14sp" android:alpha="0.8" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="?attr/colorOutlineVariant" android:layout_marginVertical="8dp" />
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                            android:src="@drawable/ic_tips" android:layout_marginEnd="12dp"
+                            android:layout_gravity="top" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Tips for Best Results" android:textStyle="bold"
+                                android:layout_marginBottom="4dp" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="• Use HD quality for balance of clarity and storage\n• Disable WiFi-only if you need quick uploads over mobile data\n• Share your Dropbox upload folder with a trusted contact beforehand so they can access recordings in real-time, even if you are unable to share later\n• Keep segments short (1-2 min) for faster uploads\n• Enable auto-delete to save local storage\n• Mount your phone securely for stable footage — use double-sided tape or velcro to keep it in a front shirt or jacket pocket with the camera lens unobstructed and sticking out. Ensure the microphone is not covered or muffled by fabric for clear audio quality"
+                                android:textSize="14sp" android:alpha="0.8" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
