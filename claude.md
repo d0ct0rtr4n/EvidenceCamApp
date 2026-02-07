@@ -4,12 +4,14 @@ A professional Android evidence camera application for continuous video recordin
 
 ## Tech Stack
 
-- **Language**: Kotlin 2.0.21
+- **Language**: Kotlin 2.2.21
+- **Build**: AGP 9.0.0 / Gradle 9.3.1
 - **Min SDK**: 26 / **Target SDK**: 35
 - **Architecture**: MVVM with Repository pattern
-- **DI**: Hilt
+- **DI**: Hilt 2.59.1
+- **Annotation Processing**: KSP 2.2.21-2.0.5
 - **Async**: Coroutines + Flow/StateFlow
-- **Database**: Room
+- **Database**: Room 2.6.1
 - **Preferences**: DataStore
 - **Camera**: CameraX 1.4.1
 - **Video Processing**: Media3 Transformer

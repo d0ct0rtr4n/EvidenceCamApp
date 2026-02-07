@@ -115,9 +115,6 @@ class VideoRecordingAdapter(
                 checkbox.visibility = if (isSelectionMode) View.VISIBLE else View.GONE
                 checkbox.isChecked = isSelected
 
-                // Card selection visual feedback
-                root.isChecked = isSelected
-
                 // Click listeners
                 root.setOnClickListener {
                     if (isSelectionMode) {

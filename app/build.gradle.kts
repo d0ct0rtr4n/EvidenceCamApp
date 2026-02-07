@@ -96,14 +96,14 @@ dependencies {
     // WorkManager - Latest stable
     implementation("androidx.work:work-runtime-ktx:2.10.0")
 
-    // Room Database - Latest stable 2.6.1
-    val roomVersion = "2.6.1"
+    // Room Database - Latest stable 2.8.4
+    val roomVersion = "2.8.4"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
-    // Hilt Dependency Injection - Latest stable 2.54
-    val hiltVersion = "2.54"
+    // Hilt Dependency Injection - Latest stable 2.59.1
+    val hiltVersion = "2.59.1"
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-compiler:$hiltVersion")
     

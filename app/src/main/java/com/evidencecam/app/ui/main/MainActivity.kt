@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -19,6 +20,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -52,6 +56,10 @@ class MainActivity : AppCompatActivity() {
     private var overlayUpdateJob: Job? = null
     private var longPressAnimator: ValueAnimator? = null
     private var waitingForRelease = false
+
+    private var idleCameraProvider: ProcessCameraProvider? = null
+    private var idlePreview: Preview? = null
+    private var isIdlePreviewActive = false
 
     private val requiredPermissions = mutableListOf(
         Manifest.permission.CAMERA,
@@ -191,6 +199,15 @@ class MainActivity : AppCompatActivity() {
                         binding.previewView.visibility = if (settings.showPreview) View.VISIBLE else View.INVISIBLE
                         if (settings.keepScreenOn) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                         else window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+                        val state = viewModel.recordingState.value
+                        if (settings.showPreview && (state is RecordingState.Idle || state is RecordingState.Error)) {
+                            startIdlePreview()
+                        } else if (!settings.showPreview && isIdlePreviewActive) {
+                            idleCameraProvider?.unbindAll()
+                            isIdlePreviewActive = false
+                            idlePreview = null
+                        }
                     }
                 }
                 launch {
@@ -215,11 +232,13 @@ class MainActivity : AppCompatActivity() {
                 binding.tvRecordHint.text = "Tap to start recording"
                 cancelLongPressProgress()
                 stopOverlayUpdates()
+                startIdlePreview()
             }
             is RecordingState.Starting -> {
                 binding.btnRecord.isEnabled = false
                 binding.tvStatus.text = "Starting..."
                 binding.tvRecordHint.text = ""
+                stopIdlePreview()
             }
             is RecordingState.Recording -> {
                 binding.btnRecord.setImageResource(R.drawable.ic_stop)
@@ -245,6 +264,7 @@ class MainActivity : AppCompatActivity() {
                 binding.tvRecordHint.text = "Tap to start recording"
                 cancelLongPressProgress()
                 stopOverlayUpdates()
+                startIdlePreview()
             }
         }
     }
@@ -423,8 +443,59 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.refreshStorageInfo()
+        val state = viewModel.recordingState.value
+        if (state is RecordingState.Idle || state is RecordingState.Error) {
+            startIdlePreview()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isIdlePreviewActive) {
+            idleCameraProvider?.unbindAll()
+            isIdlePreviewActive = false
+            idlePreview = null
+        }
     }
     
+    private fun startIdlePreview() {
+        if (isIdlePreviewActive) return
+
+        val state = viewModel.recordingState.value
+        if (state is RecordingState.Recording || state is RecordingState.Starting || state is RecordingState.Stopping) return
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) return
+
+        if (!viewModel.settings.value.showPreview) return
+
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            try {
+                val provider = cameraProviderFuture.get()
+                idleCameraProvider = provider
+
+                val currentState = viewModel.recordingState.value
+                if (currentState is RecordingState.Recording || currentState is RecordingState.Starting) return@addListener
+
+                provider.unbindAll()
+
+                idlePreview = Preview.Builder().build().also {
+                    it.setSurfaceProvider(binding.previewView.surfaceProvider)
+                }
+
+                provider.bindToLifecycle(this, CameraSelector.DEFAULT_BACK_CAMERA, idlePreview)
+                isIdlePreviewActive = true
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Failed to start idle preview", e)
+            }
+        }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun stopIdlePreview() {
+        isIdlePreviewActive = false
+        idlePreview = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         stopOverlayUpdates()
