@@ -2,6 +2,5 @@
 <data-extraction-rules>
     <cloud-backup>
         <include domain="sharedpref" path="." />
-        <exclude domain="external" path="Movies/EvidenceCam" />
     </cloud-backup>
 </data-extraction-rules>

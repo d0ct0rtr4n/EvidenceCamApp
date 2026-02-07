@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
+import android.media.MediaMetadataRetriever
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
@@ -285,12 +286,26 @@ class RecordingService : LifecycleService() {
                 file
             }
 
+            val actualDurationMs = try {
+                val retriever = MediaMetadataRetriever()
+                try {
+                    retriever.setDataSource(finalFile.absolutePath)
+                    retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        ?.toLongOrNull() ?: (currentSettings.segmentDuration.seconds * 1000L)
+                } finally {
+                    retriever.release()
+                }
+            } catch (e: Exception) {
+                Log.w(TAG, "Could not read video duration, using configured duration", e)
+                currentSettings.segmentDuration.seconds * 1000L
+            }
+
             val recording = VideoRecording(
                 id = UUID.randomUUID().toString(),
                 fileName = finalFile.name,
                 filePath = finalFile.absolutePath,
                 fileSize = finalFile.length(),
-                durationMs = currentSettings.segmentDuration.seconds * 1000L,
+                durationMs = actualDurationMs,
                 recordedAt = Date(timestamp),
                 uploadStatus = if (currentSettings.uploadDestination == UploadDestination.LOCAL_ONLY)
                     UploadStatus.SKIPPED else UploadStatus.PENDING,

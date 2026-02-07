@@ -100,7 +100,7 @@ class GalleryActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = VideoRecordingAdapter(
-            onItemClick = { recording -> playVideo(recording) },
+            onItemClick = { _ -> /* clicks now enter selection mode in adapter */ },
             onItemLongClick = { _ -> updateSelectionUI(1) },
             onSelectionChanged = { count -> updateSelectionUI(count) }
         )
@@ -161,31 +161,6 @@ class GalleryActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun playVideo(recording: VideoRecording) {
-        val file = File(recording.filePath)
-        if (!file.exists()) {
-            Toast.makeText(this, "File not found", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val uri = FileProvider.getUriForFile(
-            this,
-            "${packageName}.fileprovider",
-            file
-        )
-
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(uri, "video/mp4")
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
-        } else {
-            Toast.makeText(this, "No video player found", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1,6 +1,6 @@
 # Evidence Cam App for Android
 
-A professional evidence camera application for Android with automatic cloud upload capabilities.
+Continuous video recording with timestamp overlay and automatic cloud backup
 
 ## Latest Stable Versions (January 2025)
 

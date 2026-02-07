@@ -123,7 +123,8 @@ class VideoRecordingAdapter(
                     if (isSelectionMode) {
                         toggleSelection(recording)
                     } else {
-                        onItemClick(recording)
+                        startSelectionMode(recording)
+                        onItemLongClick(recording)
                     }
                 }
 

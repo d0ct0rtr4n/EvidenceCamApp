@@ -14,6 +14,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -128,6 +130,13 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun setupUI() {
+        // Push top bar below the system status bar so settings button is accessible
+        ViewCompat.setOnApplyWindowInsetsListener(binding.topBar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+            view.setPadding(view.paddingLeft, insets.top + view.paddingBottom, view.paddingRight, view.paddingBottom)
+            windowInsets
+        }
+
         binding.btnSettings.setOnClickListener {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
