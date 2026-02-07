@@ -1,0 +1,156 @@
+# Evidence Cam Privacy Policy
+
+**Last Updated:** February 2026
+
+## Overview
+
+Evidence Cam is a video recording application designed for personal evidence documentation. This policy explains what data the app collects, how it's stored, and your rights as a user.
+
+**Key Point:** All recordings you create are owned entirely by you. The app publisher has no access to your videos, audio, or personal data.
+
+---
+
+## What Data Does the App Collect?
+
+### Data You Create
+- **Video recordings** - Captured through your device's camera
+- **Audio** - Recorded alongside video
+- **GPS coordinates** - Embedded in video overlay (if location permission granted)
+- **Timestamps** - Date and time of recordings
+
+### Data Stored Locally
+- Recording preferences (quality, segment duration)
+- Dropbox connection status (if configured)
+- Privacy policy acceptance status
+
+### Data NOT Collected
+- Personal identification information
+- Usage analytics or telemetry
+- Crash reports sent to the publisher
+- Any data transmitted to the app publisher's servers
+
+---
+
+## Where Is Your Data Stored?
+
+### On Your Device
+All recordings are stored in your device's local storage under the app's private directory. You have full control over these files through the app's Gallery feature.
+
+### Cloud Storage (Optional)
+If you choose to enable Dropbox backup:
+- Videos are uploaded directly to **your personal Dropbox account**
+- The app connects to Dropbox using your own credentials
+- Files are stored in the "Apps/EvidenceCamApp" folder in your Dropbox
+- The publisher has no access to your Dropbox account or uploaded files
+
+---
+
+## What Can the Publisher See?
+
+| Data Type | Publisher Access |
+|-----------|-----------------|
+| Your videos and audio | **None** |
+| Your GPS location | **None** |
+| Your Dropbox files | **None** |
+| Your device information | **None** |
+| App crash data | **None** |
+| Usage statistics | **None** |
+
+**The publisher operates no servers that receive your data.** All functionality runs locally on your device or through your own third-party accounts (Dropbox).
+
+---
+
+## What Can You Control?
+
+### You Have Full Control Over:
+- **All recordings** - View, export, share, or delete at any time
+- **Location tracking** - Grant or deny GPS permission; recordings work without it
+- **Cloud backup** - Entirely optional; disable or disconnect Dropbox anytime
+- **Local storage** - Delete recordings individually or clear all data
+- **App data** - Uninstalling the app removes all local preferences
+
+### How to Delete Your Data:
+1. **Individual recordings:** Use the Gallery to select and delete
+2. **All local data:** Uninstall the app or clear app data in Android Settings
+3. **Cloud backups:** Delete files directly from your Dropbox account
+
+---
+
+## Permissions Explained
+
+| Permission | Purpose | Required? |
+|------------|---------|-----------|
+| Camera | Record video | Yes |
+| Microphone | Record audio with video | Yes |
+| Location | Add GPS coordinates to video overlay | No |
+| Notifications | Show recording status | No |
+| Storage/Media | Save and access recordings | Yes |
+
+**Optional permissions:** If you deny location or notification permissions, the app will still function. GPS coordinates simply won't appear on your recordings, and you won't receive status notifications.
+
+---
+
+## Third-Party Services
+
+### Dropbox (Optional)
+If you choose to connect Dropbox:
+- You authenticate directly with Dropbox using their secure OAuth flow
+- The app requests only the permissions needed to upload files to your app folder
+- Your Dropbox credentials are never visible to the app publisher
+- Dropbox's own privacy policy applies to files stored in your account: https://www.dropbox.com/privacy
+
+---
+
+## Legal Considerations
+
+### Your Responsibility
+You are solely responsible for:
+- Complying with local laws regarding video and audio recording
+- Obtaining consent where required by law
+- How you use, store, and share your recordings
+
+### Consent Laws
+Many jurisdictions require consent before recording others. The app displays a reminder about this responsibility. Research your local laws before using the app to record.
+
+---
+
+## Data Security
+
+- Recordings are stored in the app's private storage directory
+- Dropbox transfers use HTTPS encryption
+- No data is transmitted to the publisher's servers
+- Your Dropbox authentication tokens are stored securely on-device
+
+---
+
+## Children's Privacy
+
+This app is not intended for use by children under 13. We do not knowingly collect data from children.
+
+---
+
+## Changes to This Policy
+
+We may update this policy occasionally. Significant changes will be communicated through app updates. Continued use of the app after changes constitutes acceptance.
+
+---
+
+## Contact
+
+For questions about this privacy policy or the app:
+- GitHub Issues: [Repository URL]
+- Email: [Contact Email]
+
+---
+
+## Summary
+
+- **Your recordings = Your property**
+- **Publisher sees nothing** - No servers, no analytics, no access
+- **Cloud backup is optional** - Uses your own Dropbox account
+- **You control everything** - Delete anytime, deny optional permissions
+- **You're responsible** - Follow local recording laws
+
+---
+
+*Evidence Cam is designed with privacy as a core principle. Your data stays yours.*
