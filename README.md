@@ -1,23 +1,8 @@
 # Evidence Cam App for Android
 
+Version 1.0.2
+
 Continuous video recording with timestamp overlay and automatic cloud backup
-
-## Latest Stable Versions (January 2025)
-
-| Component | Version |
-|-----------|---------|
-| Android Gradle Plugin | 8.7.3 |
-| Kotlin | 2.0.21 |
-| Gradle | 8.9 |
-| CameraX | 1.4.1 |
-| Hilt | 2.54 |
-| Room | 2.6.1 |
-| Lifecycle | 2.8.7 |
-| Coroutines | 1.9.0 |
-| compileSdk | 35 |
-| targetSdk | 35 |
-| minSdk | 26 |
-| Java | 17 |
 
 ## Features
 
@@ -89,17 +74,10 @@ EvidenceCamApp/
 └── gradle.properties
 ```
 
-## Google Play Store Requirements
+## Permissions
 
-✅ Privacy Policy included
-✅ All permissions declared
-✅ Target SDK 35
-✅ 64-bit compatible
-
-## Troubleshooting
-
-**"SDK location not found"**: Create `local.properties` with your SDK path
-
-**Build errors**: Run `./gradlew --refresh-dependencies`
-
-**Camera permission denied**: Grant permissions in device settings
+- **Camera** — video recording
+- **Microphone** — audio capture
+- **Location** — GPS overlay on recordings
+- **Notifications** — recording status and upload progress
+- **Foreground Service** — background recording
