@@ -39,8 +39,7 @@ data class AppSettings(
     val enableAudio: Boolean = true,
     val autoDeleteAfterUpload: Boolean = false,
     val keepScreenOn: Boolean = true,
-    val showPreview: Boolean = true,
-    val autoStartRecording: Boolean = false
+    val showPreview: Boolean = true
 )
 
 enum class SegmentDuration(val displayName: String, val seconds: Int) {

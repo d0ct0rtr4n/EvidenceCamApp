@@ -30,7 +30,6 @@ class SettingsRepository @Inject constructor(
         private val AUTO_DELETE_AFTER_UPLOAD = booleanPreferencesKey("auto_delete_after_upload")
         private val KEEP_SCREEN_ON = booleanPreferencesKey("keep_screen_on")
         private val SHOW_PREVIEW = booleanPreferencesKey("show_preview")
-        private val AUTO_START_RECORDING = booleanPreferencesKey("auto_start_recording")
         private val PRIVACY_POLICY_ACCEPTED = booleanPreferencesKey("privacy_policy_accepted")
         private val DROPBOX_CONFIG = stringPreferencesKey("dropbox_config")
     }
@@ -51,8 +50,7 @@ class SettingsRepository @Inject constructor(
             enableAudio = preferences[ENABLE_AUDIO] ?: true,
             autoDeleteAfterUpload = preferences[AUTO_DELETE_AFTER_UPLOAD] ?: false,
             keepScreenOn = preferences[KEEP_SCREEN_ON] ?: true,
-            showPreview = preferences[SHOW_PREVIEW] ?: true,
-            autoStartRecording = preferences[AUTO_START_RECORDING] ?: false
+            showPreview = preferences[SHOW_PREVIEW] ?: true
         )
     }
 
@@ -100,10 +98,6 @@ class SettingsRepository @Inject constructor(
 
     suspend fun updateShowPreview(show: Boolean) {
         context.dataStore.edit { it[SHOW_PREVIEW] = show }
-    }
-
-    suspend fun updateAutoStartRecording(autoStart: Boolean) {
-        context.dataStore.edit { it[AUTO_START_RECORDING] = autoStart }
     }
 
     suspend fun acceptPrivacyPolicy() {

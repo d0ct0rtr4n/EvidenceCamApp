@@ -1,13 +1,16 @@
 package com.evidencecam.app.service
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ServiceInfo
 import android.media.MediaMetadataRetriever
 import android.os.Binder
+import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
@@ -123,11 +126,15 @@ class RecordingService : LifecycleService() {
     
     private fun startForegroundNotification() {
         val notification = createNotification("Initializing...")
-        startForeground(
-            Constants.NOTIFICATION_ID_RECORDING,
-            notification,
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(
+                Constants.NOTIFICATION_ID_RECORDING, 
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_CAMERA or ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
+            )
+        } else {
+            startForeground(Constants.NOTIFICATION_ID_RECORDING, notification)
+        }
     }
     
     private fun createNotification(content: String): Notification {
@@ -175,7 +182,10 @@ class RecordingService : LifecycleService() {
             _recordingState.value = RecordingState.Error(e.message ?: "Unknown error")
             releaseWakeLock()
             locationProvider.stopLocationUpdates()
-            sendBroadcast(Intent(Constants.ACTION_ERROR).putExtra("error_message", e.message))
+            sendBroadcast(Intent(Constants.ACTION_ERROR).apply {
+                setPackage(packageName)
+                putExtra("error_message", e.message)
+            })
         }
     }
     
@@ -234,11 +244,16 @@ class RecordingService : LifecycleService() {
 
                 val fileOutputOptions = FileOutputOptions.Builder(currentSegmentFile!!).build()
                 
-                currentRecording = videoCapture?.output
-                    ?.prepareRecording(this@RecordingService, fileOutputOptions)
-                    ?.apply { if (currentSettings.enableAudio) withAudioEnabled() }
-                    ?.start(mainThreadExecutor) { event -> handleRecordingEvent(event) }
-                
+                val recordingRequest = videoCapture?.output?.prepareRecording(this@RecordingService, fileOutputOptions)
+                if (currentSettings.enableAudio) {
+                    if (ContextCompat.checkSelfPermission(this@RecordingService, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                        recordingRequest?.withAudioEnabled()
+                    } else {
+                        Log.w(TAG, "Audio recording requested but permission is not granted.")
+                    }
+                }
+                currentRecording = recordingRequest?.start(mainThreadExecutor) { event -> handleRecordingEvent(event) }
+
                 segmentCount++
                 _recordingState.value = RecordingState.Recording(
                     totalRecordingStartTime, segmentCount, segmentStartTime
@@ -313,7 +328,10 @@ class RecordingService : LifecycleService() {
             )
 
             videoRepository.insertRecording(recording)
-            sendBroadcast(Intent(Constants.ACTION_SEGMENT_COMPLETED).putExtra("recording_id", recording.id))
+            sendBroadcast(Intent(Constants.ACTION_SEGMENT_COMPLETED).apply {
+                setPackage(packageName)
+                putExtra("recording_id", recording.id)
+            })
 
             // Trigger upload worker if upload destination is configured
             if (currentSettings.uploadDestination != UploadDestination.LOCAL_ONLY) {
@@ -372,7 +390,13 @@ class RecordingService : LifecycleService() {
     private fun acquireWakeLock() {
         if (wakeLock == null) {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "EvidenceCam::Recording")
+            val wakeLockType = if (currentSettings.keepScreenOn) {
+                @Suppress("DEPRECATION")
+                PowerManager.SCREEN_DIM_WAKE_LOCK
+            } else {
+                PowerManager.PARTIAL_WAKE_LOCK
+            }
+            wakeLock = pm.newWakeLock(wakeLockType, "EvidenceCam::Recording")
                 .apply { acquire(10 * 60 * 60 * 1000L) }
         }
     }

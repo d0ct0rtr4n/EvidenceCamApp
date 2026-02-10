@@ -40,12 +40,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.media3.common.util.UnstableApi
 
 @AndroidEntryPoint
+@UnstableApi
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -72,8 +73,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
-    private var pendingAutoStart = false
-
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -86,25 +85,14 @@ class MainActivity : AppCompatActivity() {
 
         if (essentialDenied) {
             // Cannot proceed without camera/audio
-            pendingAutoStart = false
             showPermissionDeniedDialog(deniedPermissions)
         } else if (deniedPermissions.isNotEmpty()) {
             // Only optional permissions denied (location, notifications) - can still proceed
             showOptionalPermissionWarning(deniedPermissions)
-            if (pendingAutoStart) {
-                pendingAutoStart = false
-                checkPrivacyPolicyAndAutoStart()
-            } else {
-                checkPrivacyPolicyAndStart()
-            }
+            checkPrivacyPolicyAndStart()
         } else {
             // All permissions granted
-            if (pendingAutoStart) {
-                pendingAutoStart = false
-                checkPrivacyPolicyAndAutoStart()
-            } else {
-                checkPrivacyPolicyAndStart()
-            }
+            checkPrivacyPolicyAndStart()
         }
     }
     
@@ -130,11 +118,6 @@ class MainActivity : AppCompatActivity() {
         setupUI()
         observeViewModel()
         registerReceivers()
-
-        // Auto-start recording if configured (only on fresh launch, not config changes)
-        if (savedInstanceState == null) {
-            tryAutoStartRecording()
-        }
     }
     
     private fun setupUI() {
@@ -342,31 +325,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPrivacyPolicyAndAutoStart() {
-        lifecycleScope.launch {
-            if (viewModel.privacyPolicyAccepted.value) {
-                viewModel.startRecording()
-            }
-            // Don't show privacy dialog on auto-start - wait for user to manually try
-        }
-    }
-
-    private fun tryAutoStartRecording() {
-        lifecycleScope.launch {
-            val settings = viewModel.settings.first()
-            if (settings.autoStartRecording && viewModel.recordingState.value is RecordingState.Idle) {
-                val missing = requiredPermissions.filter {
-                    ContextCompat.checkSelfPermission(this@MainActivity, it) != PackageManager.PERMISSION_GRANTED
-                }
-                if (missing.isEmpty()) {
-                    checkPrivacyPolicyAndAutoStart()
-                } else {
-                    pendingAutoStart = true
-                    permissionLauncher.launch(missing.toTypedArray())
-                }
-            }
-        }
-    }
     
     private fun showPermissionDeniedDialog(deniedPermissions: Set<String>) {
         val deniedNames = deniedPermissions.mapNotNull { permission ->

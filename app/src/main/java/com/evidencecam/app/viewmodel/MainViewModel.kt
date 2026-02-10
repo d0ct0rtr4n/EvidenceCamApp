@@ -9,6 +9,7 @@ import android.os.IBinder
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.util.UnstableApi
 import com.evidencecam.app.model.*
 import com.evidencecam.app.repository.SettingsRepository
 import com.evidencecam.app.repository.VideoRepository
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
+@UnstableApi
 class MainViewModel @Inject constructor(
     application: Application,
     private val videoRepository: VideoRepository,

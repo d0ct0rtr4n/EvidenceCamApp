@@ -22,12 +22,15 @@ import com.evidencecam.app.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.media3.common.util.UnstableApi
 
 @AndroidEntryPoint
+@UnstableApi
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private val viewModel: SettingsViewModel by viewModels()
+    private var authLaunched = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,15 @@ class SettingsActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // If auth was launched but user came back without completing it, reset state
+        if (authLaunched && viewModel.dropboxAuthState.value is CloudAuthState.Authenticating) {
+            viewModel.resetDropboxAuthState()
+            authLaunched = false
+        }
     }
 
     private fun setupUI() {
@@ -100,10 +112,6 @@ class SettingsActivity : AppCompatActivity() {
         binding.switchShowPreview.setOnCheckedChangeListener { _, isChecked ->
             if (viewModel.settings.value.showPreview != isChecked) viewModel.updateShowPreview(isChecked)
         }
-        binding.switchAutoStart.setOnCheckedChangeListener { _, isChecked ->
-            if (viewModel.settings.value.autoStartRecording != isChecked) viewModel.updateAutoStartRecording(isChecked)
-        }
-
         // Upload destination spinner with friendly names
         binding.spinnerUploadDestination.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
@@ -145,6 +153,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun handleOAuthCallback(intent: Intent) {
         intent.data?.let { uri ->
             if (uri.scheme == "evidencecam" && uri.host == "dropbox") {
+                authLaunched = false
                 viewModel.handleDropboxAuthCallback(uri)
             }
         }
@@ -189,10 +198,6 @@ class SettingsActivity : AppCompatActivity() {
                         if (binding.switchShowPreview.isChecked != settings.showPreview) {
                             binding.switchShowPreview.isChecked = settings.showPreview
                         }
-                        if (binding.switchAutoStart.isChecked != settings.autoStartRecording) {
-                            binding.switchAutoStart.isChecked = settings.autoStartRecording
-                        }
-
                         val uploadDestinationIndex = UploadDestination.entries.indexOf(settings.uploadDestination)
                         if (binding.spinnerUploadDestination.selectedItemPosition != uploadDestinationIndex) {
                             binding.spinnerUploadDestination.setSelection(uploadDestinationIndex)
@@ -252,6 +257,7 @@ class SettingsActivity : AppCompatActivity() {
                 launch {
                     viewModel.dropboxAuthIntent.collectLatest { event ->
                         event.getContentIfNotHandled()?.let { intent ->
+                            authLaunched = true
                             startActivity(intent)
                         }
                     }

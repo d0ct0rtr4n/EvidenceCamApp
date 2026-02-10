@@ -1,6 +1,6 @@
 # Evidence Cam App for Android
 
-Version 1.0.2
+Version 1.0.3
 
 Continuous video recording with timestamp overlay and automatic cloud backup
 
@@ -10,45 +10,40 @@ Continuous video recording with timestamp overlay and automatic cloud backup
 - Automatic cloud upload (Dropbox)
 - Smart storage management (auto-delete oldest when at capacity)
 - Timestamp/GPS overlay on recordings
-- Auto-start recording on app launch
 - Long press to stop recording
 - Background recording support
 
-## VS Code Setup
+## Development Setup
 
-### 1. Install Prerequisites
+### Prerequisites
 
-- **JDK 17**: Download from [Adoptium](https://adoptium.net/)
-- **Android Studio**: For SDK tools (or standalone SDK)
-- **VS Code Extensions**: Kotlin, Gradle for Java
+- **Android Studio** (recommended) — [Download](https://developer.android.com/studio)
+- **JDK 17** or higher
+- **Android SDK** — Min API 26, Target API 35
 
-### 2. Configure Environment
+### Building the Project
 
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/d0ct0rtr4n/EvidenceCamApp.git
+   cd EvidenceCamApp
+   ```
+
+2. **Open in Android Studio**
+   - File → Open → Select project directory
+   - Android Studio will automatically sync Gradle dependencies
+
+3. **Build and Run**
+   - Use Android Studio's Run button, or
+   - Build → Make Project
+   - Build → Build Bundle(s) / APK(s) → Build APK(s)
+
+### Alternative: Command Line Build
+
+If you prefer building via command line, ensure Gradle is installed:
 ```bash
-# Add to your shell profile
-export ANDROID_HOME=$HOME/Android/Sdk
-export JAVA_HOME=/path/to/jdk-17
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-```
-
-### 3. Create local.properties
-
-Create `local.properties` in project root:
-```properties
-sdk.dir=/path/to/Android/Sdk
-```
-
-### 4. Build & Run
-
-```bash
-# Make gradlew executable (Mac/Linux)
-chmod +x gradlew
-
-# Build debug APK
-./gradlew assembleDebug
-
-# Install on connected device
-./gradlew installDebug
+gradle assembleDebug      # Build debug APK
+gradle installDebug       # Install on connected device
 ```
 
 ## Project Structure

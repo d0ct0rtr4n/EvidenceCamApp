@@ -75,8 +75,14 @@
 
                     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:gravity="center_vertical" android:layout_marginBottom="8dp">
-                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1" android:text="Keep Screen On" />
+                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Prevent Screen Lock" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Keep screen on during recording" android:textSize="12sp"
+                                android:alpha="0.7" />
+                        </LinearLayout>
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/switchKeepScreenOn" android:layout_width="wrap_content"
                             android:layout_height="wrap_content" android:checked="true" />
@@ -91,20 +97,6 @@
                             android:layout_height="wrap_content" android:checked="true" />
                     </LinearLayout>
 
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-                        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1" android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="Auto-Start Recording" />
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                android:text="Start recording when app launches" android:textSize="12sp"
-                                android:alpha="0.7" />
-                        </LinearLayout>
-                        <com.google.android.material.switchmaterial.SwitchMaterial
-                            android:id="@+id/switchAutoStart" android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" android:checked="false" />
-                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

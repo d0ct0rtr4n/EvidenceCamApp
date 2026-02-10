@@ -81,10 +81,6 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch { settingsRepository.updateShowPreview(show) }
     }
 
-    fun updateAutoStartRecording(autoStart: Boolean) {
-        viewModelScope.launch { settingsRepository.updateAutoStartRecording(autoStart) }
-    }
-
     // Dropbox Authentication
     fun signInToDropbox() {
         viewModelScope.launch {
